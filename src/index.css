@@ -1,0 +1,37 @@
+:root {
+  --spacing-xs: 0.4rem;
+  --spacing-sm: 0.8rem;
+  --spacing-md: 1.2rem;
+  --spacing-lg: 1.7rem;
+  --spacing-xl: 2.4rem;
+
+  --font-size: 0.75rem;
+
+  --col-primary: #000000;
+  --col-lightgrey: #F5F5F5;
+  --col-background: #ffffff;
+
+  --col-disabled: rgba(0, 0, 0, .7);
+  --col-warning: #FF7900;
+  --col-danger: #FF0000;
+
+  --font-main: 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: var(--font-main);
+  padding: 0;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+header,
+main {
+  padding: var(--spacing-md)
+}
