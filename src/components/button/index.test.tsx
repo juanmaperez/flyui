@@ -27,39 +27,39 @@ describe('Button', () => {
   })
 
   describe('loading state', () => {
-    test('should render loading when loading is passed as true', () => {
-      render(<Button isLoading={true}>Launch Rocket</Button>);
+
+    test('should render loading when not loading message is passed as true', () => {
+      render(<Button isLoading={true} >Launch Rocket</Button>);
+      const button = screen.getByText(/Loading/i);
+      expect(button).toBeInTheDocument();
+    })
+    test('should render Launching when loading is passed as true', () => {
+      render(<Button isLoading={true} loadingMessage="Launching">Launch Rocket</Button>);
       const button = screen.getByText(/Launching/i);
       expect(button).toBeInTheDocument();
     })
 
-    test('should not render loading when loading is passed but there is an error', () => {
-      render(<Button isLoading={true} isError={true}>Launch Rocket</Button>);
+    test('should not render Launching when loading is passed but there is an error', () => {
+      render(<Button isLoading={true} isError={true} loadingMessage="Launching">Launch Rocket</Button>);
       const button = screen.queryByText(/Launching/i);
       expect(button).not.toBeInTheDocument();
     })
 
     test('whem loading you should be able to cancel the task', async () => {
-      render(<Button isLoading={true} >Launch Rocket</Button>);
-      fireEvent.mouseOver(screen.getByText(/Launching/i));
+      render(<Button isLoading={true} loadingMessage="Launching" cancelMessage='Cancel Launching'>Launch Rocket</Button>);
+      fireEvent.mouseOver(screen.getByText("Launching"));
 
-      const cancelButton = await waitFor(() => screen.getByText(/Cancel/i))
+      const cancelButton = await waitFor(() => screen.getByText(/Cancel Launching/i))
 
       expect(cancelButton).toBeInTheDocument()
-    })
-
-    test('while loading the button should be disabled', async () => {
-      render(<Button isLoading={true} >Launch Rocket</Button>);
-      const button = screen.queryByText(/Launching/i);
-      expect(button).toHaveAttribute('disabled')
     })
 
   })
 
   describe('error state', () => {
     test('should render error alert when error is true', () => {
-      render(<Button isError={true}>Launch Rocket</Button>);
-      const errorAlert = screen.getByText(/Error/i);
+      render(<Button isError={true} errorMessage="Ignition error">Launch Rocket</Button>);
+      const errorAlert = screen.getByText(/Ignition error/i);
       expect(errorAlert).toBeInTheDocument();
     })
   })

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from './components/button';
 
 function App() {
   return (
@@ -8,8 +9,7 @@ function App() {
       </header>
 
       <main>
-
-
+        <Button maxTimeout={3000}>Launch</Button>
       </main>
     </div>
   );
