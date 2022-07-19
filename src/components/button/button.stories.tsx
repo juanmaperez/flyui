@@ -20,19 +20,20 @@ export const Default = Template.bind({});
 
 const DefaultArgs: Partial<ButtonProps> = {
   children: "Launch Rocket",
+  url: "some url"
 }
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+
 Default.args = DefaultArgs;
 
 export const Loading = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+
 Loading.args = {
   ...DefaultArgs,
   isLoading: true
 };
 
 export const Disabled = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+
 Disabled.args = {
   ...DefaultArgs,
   disabled: true
@@ -40,7 +41,7 @@ Disabled.args = {
 
 
 export const Error = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+
 Error.args = {
   ...DefaultArgs,
   isLoading: true,
