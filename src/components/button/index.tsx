@@ -10,7 +10,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   loadingMessage?: string;
   cancelMessage?: string;
   helpText?: string;
-  url?: string;
+  url: string;
   maxTimeout?: number;
 }
 
@@ -22,7 +22,7 @@ export const Button = ({
   loadingMessage = 'Loading',
   cancelMessage = 'Cancel',
   maxTimeout,
-  url = "https://httpbin.org/delay/2",
+  url,
   disabled,
   helpText = "Click me!",
   ...otherProps
@@ -71,7 +71,7 @@ export const Button = ({
 
   return (
     <div className="button-wrapper">
-      <button {...otherProps} onClick={handleOnClick} disabled={disabled} className={classes}>
+      <button {...otherProps} onClick={handleOnClick} disabled={disabled || !url} className={classes}>
         {loading ? loadingMessage : children}
       </button>
       <div className={clsx('helper', {
