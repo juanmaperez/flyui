@@ -44,13 +44,13 @@ export const Button = ({
   });
 
   const handleOnClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    controllerRef.current = new AbortController();
-
-    if (isLoading) {
+    if (isLoading && controllerRef.current) {
       controllerRef.current.abort()
       setStatus(ButtonStatus.ERROR)
       return;
     }
+
+    controllerRef.current = new AbortController();
 
     if (maxTimeout) {
       timeoutRef.current = setTimeout(() => {
