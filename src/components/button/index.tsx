@@ -71,7 +71,7 @@ export const Button = ({
 
   React.useEffect(() => {
     return () => {
-      if (timeoutRef.current !== null) {
+      if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
       }
     }
