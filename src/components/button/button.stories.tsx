@@ -1,7 +1,7 @@
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button, ButtonProps } from '.';
+import { Button, ButtonProps, ButtonStatus } from '.';
 
 //👇 This default export determines where your story goes in the story list
 export default {
@@ -29,7 +29,7 @@ export const Loading = Template.bind({});
 
 Loading.args = {
   ...DefaultArgs,
-  isLoading: true
+  defaultStatus: ButtonStatus.LOADING
 };
 
 export const Disabled = Template.bind({});
@@ -44,7 +44,6 @@ export const Error = Template.bind({});
 
 Error.args = {
   ...DefaultArgs,
-  isLoading: true,
-  isError: true
+  defaultStatus: ButtonStatus.ERROR
 };
 

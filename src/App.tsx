@@ -9,7 +9,7 @@ function App() {
       </header>
 
       <main>
-        <Button maxTimeout={3000} url="https://httpbin.org/delay/2">Launch</Button>
+        <Button maxTimeout={1000} url="https://httpbin.org/delay/2">Launch</Button>
       </main>
     </div>
   );

@@ -2,10 +2,15 @@ import clsx from "clsx";
 import React, { ReactNode } from "react";
 import "./index.scss";
 
+export enum ButtonStatus {
+  LOADING = "LOADING",
+  ERROR = "ERROR",
+  IDLE = "IDLE"
+}
+
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
-  isLoading?: boolean;
-  isError?: boolean;
+  defaultStatus?: ButtonStatus;
   errorMessage?: string;
   loadingMessage?: string;
   cancelMessage?: string;
@@ -15,8 +20,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 export const Button = ({
-  isLoading = false,
-  isError = false,
+  defaultStatus = ButtonStatus.IDLE,
   children = 'Submit',
   errorMessage = 'Error',
   loadingMessage = 'Loading',
@@ -27,36 +31,41 @@ export const Button = ({
   helpText = "Click me!",
   ...otherProps
 }: ButtonProps) => {
-  const [loading, setLoading] = React.useState<boolean>(isLoading && !isError)
-  const [error, setError] = React.useState<boolean>(isError)
-  const controllerRef = React.useRef(new AbortController());
-  const timeoutRef = React.useRef<null | NodeJS.Timeout>(null)
+  const [status, setStatus] = React.useState<ButtonStatus>(defaultStatus)
+  const controllerRef = React.useRef<AbortController>();
+  const timeoutRef = React.useRef<NodeJS.Timeout>()
+
+  const isLoading = status === ButtonStatus.LOADING;
+  const isError = status === ButtonStatus.ERROR
 
   const classes = clsx("button", {
-    'button--type-loading': loading && !error,
-    'button--type-error': error
+    'button--type-loading': status === ButtonStatus.LOADING,
+    'button--type-error': status === ButtonStatus.ERROR
   });
 
   const handleOnClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (loading && !error) {
+    controllerRef.current = new AbortController();
+
+    if (isLoading) {
       controllerRef.current.abort()
-      setError(true)
+      setStatus(ButtonStatus.ERROR)
       return;
     }
 
     if (maxTimeout) {
       timeoutRef.current = setTimeout(() => {
-        console.log(controllerRef)
-        controllerRef.current.abort()
+        if (controllerRef.current) {
+          controllerRef.current.abort()
+        }
       }, maxTimeout);
     }
-    setError(false)
-    setLoading(true)
+
+    setStatus(ButtonStatus.LOADING)
     fetch(url, { signal: controllerRef.current.signal }).then(response => {
-      setLoading(false)
+      setStatus(ButtonStatus.IDLE)
       clearTimeout(timeoutRef.current as NodeJS.Timeout)
     }).catch(err => {
-      setError(true)
+      setStatus(ButtonStatus.ERROR)
     });
   }
 
@@ -72,18 +81,18 @@ export const Button = ({
   return (
     <div className="button-wrapper">
       <button {...otherProps} onClick={handleOnClick} disabled={disabled || !url} className={classes}>
-        {loading ? loadingMessage : children}
+        {isLoading ? loadingMessage : children}
       </button>
       <div className={clsx('helper', {
-        'helper--type-loading': loading,
-        'helper--type-error': error,
+        'helper--type-loading': isLoading,
+        'helper--type-error': isError,
         'hidden': disabled
       })}>
         <i className={clsx("arrow-up", {
-          'arrow-up--loading': loading,
-          'arrow-up--error': error
+          'arrow-up--loading': isLoading,
+          'arrow-up--error': isError
         })}></i>
-        {error ? errorMessage : loading ? cancelMessage : helpText}
+        {isError ? errorMessage : isLoading ? cancelMessage : helpText}
       </div>
     </div >
   )
